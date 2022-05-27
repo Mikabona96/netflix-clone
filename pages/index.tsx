@@ -6,7 +6,9 @@ import Banner from '../components/Banner'
 import requests from '../utils/requests'
 import { Movie } from '../typings'
 import Row from '../components/Row'
-
+import useAuth from '../hooks/useAuth'
+import { useRecoilValue } from 'recoil'
+import { modalState } from '../atoms/modalAtom'
 interface Props {
   netflixOriginals: Movie[]
   trendingNow: Movie[]
@@ -66,6 +68,14 @@ const Home = ({
   topRated
   }: Props) => {
 
+    const {logout, loading} = useAuth()
+
+    const showModal = useRecoilValue(modalState)
+
+    if (loading) {
+      return <div>Loading...</div>
+    }
+
   return (
     <div className="relative h-screen bg-gradient-to-b lg:h-[140vh]">
       <Head>
@@ -85,7 +95,7 @@ const Home = ({
           <Row title="Romance Movies" movies={romanceMovies} />
           <Row title="Documentaries" movies={documentaries} />
         </section>
-        {/* {modal} */}
+        {/* {showModal && modal} */}
       </main>
     </div>
   )
